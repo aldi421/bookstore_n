@@ -1,0 +1,8 @@
+<?php
+require __DIR__ . '/config/koneksi.php';
+$pageTitle='Tentang Kami';
+require __DIR__ . '/template/navbar.php';
+?>
+<div class="page-intro"><div class="container"><span class="eyebrow">ABOUT VELORA BOOKS</span><h1>Cerita di Balik <em>Velora.</em></h1><p>More Books, Brighter Minds — tempat membaca, belajar dan menemukan inspirasi baru.</p></div></div>
+<section class="section about-section"><div class="container about-grid"><div class="about-visual" aria-hidden="true"><span class="about-frame"></span><div class="about-paper"><span class="about-paper-top">EVERY STORY MATTERS</span><span class="about-paper-mark">V.</span><span class="about-paper-quote">A little more<br>story,<br>a lot more<br>meaning.</span><span class="about-paper-bottom">V E L O R A  B O O K S</span></div><span class="about-ribbon">A SPACE FOR READERS</span></div><div class="about-copy"><span class="eyebrow">KENALI KAMI</span><h2>Buku membuka <em>jalan baru.</em></h2><p>Velora Books adalah toko buku online untuk membantu pembaca menemukan pilihan bacaan yang sesuai dengan minat dan kebutuhan mereka.</p><p>Kami merancang katalog yang nyaman dijelajahi, informasi buku yang jelas, dan proses pemesanan yang sederhana.</p><p>Ingin mengenal karya pengembang website ini? Kunjungi portofolio melalui tombol berikut.</p><div class="about-actions"><a class="btn btn-primary" href="<?= path('katalog.php') ?>">Jelajahi Buku ↗</a><a class="btn btn-outline portfolio-cta" href="https://portofolio-anisa.lovestoblog.com/" target="_blank" rel="noopener noreferrer">Portofolio Saya ↗</a></div></div></div></section>
+<?php require __DIR__ . '/template/footer.php'; ?>

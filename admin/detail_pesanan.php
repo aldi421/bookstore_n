@@ -1,0 +1,10 @@
+<?php
+require __DIR__.'/../config/koneksi.php';require_admin();
+$id=max(0,page_int('id'));
+$order=statement($db,'SELECT p.id_pesanan AS id,p.id_user AS user_id,p.tanggal AS created_at,p.total AS total_amount,p.status AS status,p.metode_pembayaran AS payment_method,p.status_pembayaran AS payment_status,u.nama AS user_name,u.nama AS recipient_name,u.alamat AS address_current,u.email FROM pesanan p JOIN users u ON u.id_user=p.id_user WHERE p.id_pesanan=:id',['id'=>$id])->fetch();
+if(!$order){http_response_code(404);exit('Pesanan tidak ditemukan.');}
+$items=statement($db,'SELECT d.id_detail AS id,d.id_pesanan AS order_id,d.id_buku AS book_id,b.judul_buku AS book_title,d.jumlah AS quantity,d.harga AS unit_price, CASE WHEN d.harga IS NOT NULL THEN d.harga*d.jumlah ELSE NULL END AS subtotal FROM detail_pesanan d LEFT JOIN buku b ON b.id_buku=d.id_buku WHERE d.id_pesanan=:id ORDER BY d.id_detail',['id'=>$id])->fetchAll();
+$adminTitle='Detail Pesanan #'.$id;require __DIR__.'/../template/sidebar.php';
+?>
+<div class="admin-panel"><h2>Pesanan #<?= $id ?> — <?= e(ucfirst($order['status'])) ?></h2><p><strong>Pelanggan:</strong> <?= e($order['user_name']) ?> (<?= e($order['email']) ?>)</p><p><strong>Penerima:</strong> <?= e($order['recipient_name']) ?></p><p><strong>Alamat akun saat ini:</strong> <?= nl2br(e($order['address_current'] ?? '—')) ?> <small class="muted">(bukan alamat historis pesanan)</small></p><div class="table-scroll"><table><thead><tr><th>Buku</th><th>Jumlah</th><th>Harga</th><th>Subtotal</th></tr></thead><tbody><?php foreach($items as $line): ?><tr><td><?= e($line['book_title']) ?></td><td><?= (int)$line['quantity'] ?></td><td><?= ($line['unit_price']===null ? 'Tidak tercatat' : rupiah((int)$line['unit_price'])) ?></td><td><?= ($line['subtotal']===null ? 'Tidak tercatat' : rupiah((int)$line['subtotal'])) ?></td></tr><?php endforeach; ?></tbody></table></div><h3>Total <?= rupiah((int)$order['total_amount']) ?></h3><a class="btn btn-outline" href="<?= path('admin/pesanan.php') ?>">← Kelola Pesanan</a></div>
+<?php require __DIR__.'/../template/admin_footer.php'; ?>
